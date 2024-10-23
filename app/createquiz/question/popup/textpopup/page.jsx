@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { HexColorPicker } from 'react-colorful';
+import ColorPicker from '../colorpicker/page';
 
 const TextEditor = () => {
   const [textAlign, setTextAlign] = useState('left');
@@ -11,15 +11,10 @@ const TextEditor = () => {
   const [showBackgroundColorPicker, setShowBackgroundColorPicker] = useState(false);
   const [showEditor, setShowEditor] = useState(true);
 
-  const closePopup = () => {
-    setShowTextColorPicker(false);
-    setShowBackgroundColorPicker(false);
-  };
-
   if (!showEditor) return null;
 
   return (
-    <div className="p-4 w-1/5 mt-20  right-0 bg-white rounded-lg shadow-md ">
+    <div className="p-4 w-1/6 mt-0 fixed right-2 bg-white rounded-lg shadow-md ">
       <button 
         className="absolute top-2 right-2 text-gray-600 text-3xl"
         onClick={() => setShowEditor(false)}
@@ -85,31 +80,11 @@ const TextEditor = () => {
             {textColor}
           </button>
           {showTextColorPicker && (
-            <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-20">
-              <div className="bg-white p-4 rounded-lg shadow-md relative">
-                <button 
-                  className="absolute top-2 right-2 text-gray-600"
-                  onClick={() => setShowTextColorPicker(false)}
-                >
-                  &times;
-                </button>
-                <HexColorPicker color={textColor} onChange={setTextColor} />
-                <div className="flex justify-between mt-4">
-                  <button
-                    className="border px-3 py-1 rounded text-black bg-gray-200"
-                    onClick={closePopup}
-                  >
-                    ยกเลิก
-                  </button>
-                  <button
-                    className="border px-3 py-1 rounded text-white bg-blue-500"
-                    onClick={() => setShowTextColorPicker(false)}
-                  >
-                    ตกลง
-                  </button>
-                </div>
-              </div>
-            </div>
+            <ColorPicker 
+              color={textColor} 
+              onChange={setTextColor} 
+              onClose={() => setShowTextColorPicker(false)}
+            />
           )}
         </div>
       </div>
@@ -129,31 +104,11 @@ const TextEditor = () => {
             {backgroundColor}
           </button>
           {showBackgroundColorPicker && (
-            <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-20">
-              <div className="bg-white p-4 rounded-lg shadow-md relative">
-                <button 
-                  className="absolute top-2 right-2 text-gray-600"
-                  onClick={() => setShowBackgroundColorPicker(false)}
-                >
-                  &times;
-                </button>
-                <HexColorPicker color={backgroundColor} onChange={setBackgroundColor} />
-                <div className="flex justify-between mt-4">
-                  <button
-                    className="border px-3 py-1 rounded text-black bg-gray-200"
-                    onClick={closePopup}
-                  >
-                    ยกเลิก
-                  </button>
-                  <button
-                    className="border px-3 py-1 rounded text-white bg-blue-500"
-                    onClick={() => setShowBackgroundColorPicker(false)}
-                  >
-                    ตกลง
-                  </button>
-                </div>
-              </div>
-            </div>
+            <ColorPicker 
+              color={backgroundColor} 
+              onChange={setBackgroundColor} 
+              onClose={() => setShowBackgroundColorPicker(false)}
+            />
           )}
         </div>
       </div>
