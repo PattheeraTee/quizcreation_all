@@ -211,15 +211,13 @@ const ResponsePage = () => {
 
       {summary.questions.map((question, index) => (
         <div key={index} className="bg-white rounded shadow p-4 mb-4">
-          <div className="flex items-center justify-between">
-            <h3 className="text-lg font-semibold mb-2">{getQuestionText(question.questionId)}</h3>
-            <button
-              className="text-blue-500 underline"
-              onClick={() => handleViewDetails(question.questionId)}
-            >
-              ดูรายละเอียด
-            </button>
-          </div>
+          <h3 className="text-lg font-semibold mb-2">{getQuestionText(question.questionId)}</h3>
+          <button
+            className="text-gray-500 underline mb-4"
+            onClick={() => handleViewDetails(question.questionId)}
+          >
+            ดูรายละเอียด
+          </button>
           {question.summary.options ? (
             <div className="flex items-center justify-between">
               <div>
