@@ -6,6 +6,7 @@ import Swal from "sweetalert2"; // Import SweetAlert
 
 export default function MyQuizzesPage() {
   const [quizzes, setQuizzes] = useState([]);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
@@ -14,6 +15,7 @@ export default function MyQuizzesPage() {
       const response = await fetch("http://localhost:3001/quiz");
       const data = await response.json();
       setQuizzes(data);
+      setLoading(false);
     }
 
     fetchQuizzes();
@@ -52,15 +54,21 @@ export default function MyQuizzesPage() {
     });
   };
 
-  if (quizzes.length === 0) {
-    return <div>Loading...</div>;
+  if (loading) {
+    return <div className="text-center text-lg font-semibold mt-10">Loading...</div>;
+  }
+
+  if (quizzes.message) {
+    return (
+      <div className="text-center text-lg font-semibold mt-10 text-gray-600">
+        {quizzes.message}
+      </div>
+    );
   }
 
   return (
     <div className="px-4 m-4 mt-6 bg-[#F9F8F6]">
-        <h1 className="text-3xl font-semibold mb-6">
-            ควิซของฉัน
-        </h1>
+      <h1 className="text-3xl font-semibold mb-6">ควิซของฉัน</h1>
       <div className="space-y-6">
         {quizzes.map((quiz) => (
           <div
