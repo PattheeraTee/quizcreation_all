@@ -200,7 +200,7 @@ const ResponsePage = () => {
   };
 
   return (
-    <div className="p-4">
+    <div className="p-4 text-black bg-[#F9F8F6]">
       <div className="bg-white rounded shadow p-4 mb-4 flex justify-between items-center">
         <div>
           <h2 className="text-lg font-bold mb-2">{quizData.coverPage.quizTitle}</h2>
