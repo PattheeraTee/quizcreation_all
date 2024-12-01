@@ -29,6 +29,20 @@ export default function QuizPage({ params }) {
     setAnswers((prev) => ({ ...prev, [questionId]: value }));
   };
 
+  const handleDeleteQuiz = async () => {
+    try {
+      const response = await fetch(`http://localhost:3001/quiz/${quiz.id}`, {
+        method: "DELETE",
+      });
+      if (!response.ok) {
+        throw new Error("Failed to delete quiz");
+      }
+      alert("Quiz deleted successfully");
+    } catch (error) {
+      console.error("Error deleting quiz:", error);
+    }
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     console.log(answers); // Handle submission logic here
@@ -43,14 +57,14 @@ export default function QuizPage({ params }) {
         <p className="mb-6 text-gray-600">{quiz.coverPage.description}</p>
         <form onSubmit={handleSubmit}>
           {quiz.sections.map((section) => (
-            <div key={section.sectionId} className="mb-6">
+            <div key={section.id} className="mb-6">
               <h2 className="text-xl font-semibold mb-2 text-black">
                 {section.sectionTitle}
               </h2>
               <p className="mb-4 text-gray-500">{section.sectionDescription}</p>
               {section.questions.map((question) => (
                 <QuestionComponent
-                  key={question.questionId}
+                  key={question.id}
                   question={question}
                   handleInputChange={handleInputChange}
                 />
@@ -64,6 +78,12 @@ export default function QuizPage({ params }) {
             ส่ง
           </button>
         </form>
+        <button
+          onClick={handleDeleteQuiz}
+          className="w-full bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition-colors duration-300 mt-4"
+        >
+          ลบแบบทดสอบ
+        </button>
       </div>
     </div>
   );
@@ -76,15 +96,15 @@ function QuestionComponent({ question, handleInputChange }) {
         <div className="mb-4">
           <p className="font-medium mb-2 text-black">{question.text}</p>
           {question.options.map((option) => (
-            <div key={option.optionId} className="mb-1">
+            <div key={option.id} className="mb-1">
               <label className="inline-flex items-center text-black">
                 <input
                   type="radio"
-                  name={question.questionId}
+                  name={question.id}
                   value={option.text}
                   className="form-radio h-4 w-4 text-blue-600"
                   onChange={(e) =>
-                    handleInputChange(question.questionId, e.target.value)
+                    handleInputChange(question.id, e.target.value)
                   }
                 />
                 <span className="ml-2">{option.text}</span>
@@ -98,14 +118,14 @@ function QuestionComponent({ question, handleInputChange }) {
         <div className="mb-4">
           <p className="font-medium mb-2 text-black">{question.text}</p>
           {question.options.map((option) => (
-            <div key={option.optionId} className="mb-1">
+            <div key={option.id} className="mb-1">
               <label className="inline-flex items-center">
                 <input
                   type="checkbox"
                   value={option.text}
                   className="form-checkbox h-4 w-4 text-blue-600"
                   onChange={(e) =>
-                    handleInputChange(question.questionId, e.target.value)
+                    handleInputChange(question.id, e.target.value)
                   }
                 />
                 <span className="ml-2">{option.text}</span>
@@ -121,11 +141,11 @@ function QuestionComponent({ question, handleInputChange }) {
           <select
             className="form-select block w-full mt-1"
             onChange={(e) =>
-              handleInputChange(question.questionId, e.target.value)
+              handleInputChange(question.id, e.target.value)
             }
           >
             {question.options.map((option) => (
-              <option key={option.optionId} value={option.text}>
+              <option key={option.id} value={option.text}>
                 {option.text}
               </option>
             ))}
@@ -141,11 +161,11 @@ function QuestionComponent({ question, handleInputChange }) {
               <label key={rating} className="inline-flex items-center">
                 <input
                   type="radio"
-                  name={question.questionId}
+                  name={question.id}
                   value={rating}
                   className="form-radio h-4 w-4 text-blue-600"
                   onChange={(e) =>
-                    handleInputChange(question.questionId, rating)
+                    handleInputChange(question.id, rating)
                   }
                 />
                 <span className="ml-1">{rating}</span>
@@ -161,7 +181,7 @@ function QuestionComponent({ question, handleInputChange }) {
           <textarea
             className="form-textarea block w-full mt-1"
             onChange={(e) =>
-              handleInputChange(question.questionId, e.target.value)
+              handleInputChange(question.id, e.target.value)
             }
           />
         </div>
@@ -174,7 +194,7 @@ function QuestionComponent({ question, handleInputChange }) {
             type="date"
             className="form-input block w-full mt-1"
             onChange={(e) =>
-              handleInputChange(question.questionId, e.target.value)
+              handleInputChange(question.id, e.target.value)
             }
           />
         </div>

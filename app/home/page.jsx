@@ -9,6 +9,7 @@ import Template from "../components/template/page";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faTimes ,faQuestion, faClipboardList, faBrain} from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
+import ProfileMenu from "../components/menu/profile-menu";
 
 export default function Page() {
   const [selectedComponent, setSelectedComponent] = useState("myquiz"); // default to "myquiz"

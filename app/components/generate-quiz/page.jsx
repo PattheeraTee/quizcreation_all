@@ -1,13 +1,34 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 
 export default function GenerateQuizForm() {
   const [topic, setTopic] = useState("");
   const [numQuestions, setNumQuestions] = useState(1);
+  const [language, setLanguage] = useState("");
+  const [languages, setLanguages] = useState([]);
   const router = useRouter();
+
+  useEffect(() => {
+    const fetchLanguages = async () => {
+      try {
+        const response = await fetch("http://localhost:3001/languages");
+        if (response.ok) {
+          const data = await response.json();
+          setLanguages(data);
+          setLanguage(data[0]); // ตั้งค่าเริ่มต้นเป็นตัวเลือกแรก
+        } else {
+          console.error("Failed to fetch languages");
+        }
+      } catch (error) {
+        console.error("Error fetching languages:", error);
+      }
+    };
+
+    fetchLanguages();
+  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -30,6 +51,7 @@ export default function GenerateQuizForm() {
       body: JSON.stringify({
         topic,
         numQuestions,
+        language,
         userId: "admin",
         type: "quiz",
         coverPage: {
@@ -99,6 +121,25 @@ export default function GenerateQuizForm() {
               placeholder="ใส่จำนวนข้อที่ต้องการให้สร้าง"
               required
             />
+          </div>
+
+          <div>
+            <label htmlFor="language" className="block text-gray-700 mb-2">
+              เลือกภาษาที่ต้องการสร้างแบบทดสอบ
+            </label>
+            <select
+              id="language"
+              className="w-full border border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={language}
+              onChange={(e) => setLanguage(e.target.value)}
+              required
+            >
+              {languages.map((lang, index) => (
+                <option key={index} value={lang}>
+                  {lang}
+                </option>
+              ))}
+            </select>
           </div>
 
           <button
